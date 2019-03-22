@@ -28,15 +28,58 @@ app.post("/cakes", (req, res) => {
 });
 
 app.get("/cakes", (req, res) => {
-    const cake = new Cake({
-        nome: req.body.nome,
-        recheio: req.body.recheio,
-        massa: req.body.massa,
-        fruta: req.body.fruta,
-        cobertura: req.body.cobertura,
-    });
+    Cake.find().then(allCakes => {
+        if (allCakes.length >= 0) {
+            res.send({ allCakes });
+        } else {
+            res.status(400).send(e);
+        }
+    },
+        e => {
+            res.status(400).send(e);
+        })
+});
 
-    cake.save().then((m) => console.log(m));
+app.get("/cakes/:id", (req, res) => {
+    const id = req.params.id;
+
+    Cake.findById(id)
+        .then(cake => {
+            if (!cake) {
+                return res.status(404).send();
+            }
+
+            res.send({ cake });
+        })
+        .catch(e => res.status(400).send());
+});
+
+
+app.delete('/cakes/:id', (req, res) => {
+    const id = req.params.id;
+
+    Cake.findByIdAndRemove(id)
+        .then(cake => {
+            if (!cake) {
+                return res.status(404).send();
+            }
+
+            res.send({ cake });
+        })
+        .catch(e => res.status(400).send());
+});
+
+app.put('/cakes/:id', (req, res) => {
+    const id = req.params.id;
+
+    Cake.findByIdAndUpdate(id, { $set: req.body }, { new: true })
+        .then(cake => {
+            if (!cake) {
+                return res.status(404).send();
+            }
+            res.send({ cake });
+        })
+        .catch(e => res.status(400).send());
 });
 
 app.listen(process.env.PORT || port, () => {
