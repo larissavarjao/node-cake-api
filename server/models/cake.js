@@ -25,9 +25,9 @@ const Cake = mongoose.model('Cake', {
         type: String,
         required: true,
         minlength: 1
-    },
+    }
 });
 
 module.exports = {
-    Item
+    Cake
 };
