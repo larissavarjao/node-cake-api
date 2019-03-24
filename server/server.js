@@ -11,7 +11,7 @@ mongoose.connect("mongodb://cakefactory2:cakefactory2@ds159840.mlab.com:59840/ca
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.post("/cakes", (req, res) => {
+app.post("/cake", (req, res) => {
     const cake = new Cake({
         nome: req.body.nome,
         recheio: req.body.recheio,
@@ -22,25 +22,20 @@ app.post("/cakes", (req, res) => {
 
     cake.save().then(doc => {
         res.send(doc);
-    }, e => {
-        res.status(400).send(e);
-    });
+    }).catch(e => res.status(400).send(e));
 });
 
-app.get("/cakes", (req, res) => {
+app.get("/cake", (req, res) => {
     Cake.find().then(allCakes => {
         if (allCakes.length >= 0) {
             res.send({ allCakes });
         } else {
             res.status(400).send(e);
         }
-    },
-        e => {
-            res.status(400).send(e);
-        })
+    }).catch(e => res.status(400).send(e));
 });
 
-app.get("/cakes/:id", (req, res) => {
+app.get("/cake/:id", (req, res) => {
     const id = req.params.id;
 
     Cake.findById(id)
@@ -55,7 +50,7 @@ app.get("/cakes/:id", (req, res) => {
 });
 
 
-app.delete('/cakes/:id', (req, res) => {
+app.delete('/cake/:id', (req, res) => {
     const id = req.params.id;
 
     Cake.findByIdAndRemove(id)
@@ -69,7 +64,7 @@ app.delete('/cakes/:id', (req, res) => {
         .catch(e => res.status(400).send());
 });
 
-app.put('/cakes/:id', (req, res) => {
+app.put('/cake/:id', (req, res) => {
     const id = req.params.id;
 
     Cake.findByIdAndUpdate(id, { $set: req.body }, { new: true })
