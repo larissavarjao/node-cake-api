@@ -5,6 +5,6 @@
 
 - Then install the npm dependencies `npm install express body-parser mongoose node-restful  --save`
 
-- Initial config on `config/`
+- Routes on `server/server.js`
 
-- 
+- Data base schema on `server/models/cake.js`
